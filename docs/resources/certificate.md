@@ -450,7 +450,7 @@ You can work around this by doing the following:
   to grant escalated network privileges to either Terraform (`setcap
   'cap_net_bind_service=+eip' "$(which terraform)"`), or the provider (`setcap
   'cap_net_bind_service=+ep'
-  .terraform/providers/registry.terraform.io/Kid-debug/acme/VERSION/ARCH/terraform-provider-acme_vVERSION`).
+  .terraform/providers/registry.terraform.io/myklst/acme/VERSION/ARCH/terraform-provider-acme_vVERSION`).
   Both have drawbacks: granting capabilites to Terraform itself will mean that
   Terraform core and any provider launched by it will also have the capability,
   while capabilities granted to the provider will be lost every time the
