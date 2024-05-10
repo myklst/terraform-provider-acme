@@ -1,0 +1,3 @@
+[submodule "submodule/acme"]
+	path = submodule/acme
+	url = https://github.com/vancluever/terraform-provider-acme.git
