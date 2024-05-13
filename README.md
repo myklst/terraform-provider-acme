@@ -27,9 +27,11 @@ Add retryable errors under `./acme/errorlist.go` such as API limiting and thrott
 ## How to Patch
 1) Please review the Makefile.
 2) Perform the following steps sequentially:
-	1) Execute `make update-submodule` command.
-	2) Execute `make cp-submodule.` command.
-	3) If necessary, apply patches before editing by running `make patching` command. Proceed to edit the
+	1) Execute `make update-submodule`.
+	2) Execute `make cp-submodule`.
+	3) If necessary, apply patches before editing by running `make patching`. Proceed to edit the
 	submodule located in the directory "submodule/acme".
-	4) After editing, execute `make cp-docs-main` and `make cp-read-main` command to transfer the docs directory and README file to the main directory.
-	5) Finally, use `make create-patch` command to generate patch files. Ensure to customize the command based on your requirements.
+	4) After editing, utilize `make cp-docs-main` and `make cp-read-main` to transfer the docs
+	directory and README file to the main directory.
+	5) Finally, use `create-patch` to generate patch files. Ensure to customize the command based
+	on your requirements.

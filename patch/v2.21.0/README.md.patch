@@ -1,5 +1,5 @@
---- submodule/acme_copy/README.md	2024-05-13 15:08:31.957823462 +0800
-+++ submodule/acme/README.md	2024-05-13 15:08:50.630387417 +0800
+--- submodule/acme_copy/README.md	2024-05-13 15:17:22.279423781 +0800
++++ submodule/acme/README.md	2024-05-13 15:17:44.391913644 +0800
 @@ -3,10 +3,9 @@
  
  This is the repository for the Terraform ACME Provider, which one can use with
@@ -38,7 +38,7 @@
 +1) Please review the Makefile.
 +2) Perform the following steps sequentially:
 +	1) Execute `make update-submodule`.
-+	2) Execute `make cp-submodule.`
++	2) Execute `make cp-submodule`.
 +	3) If necessary, apply patches before editing by running `make patching`. Proceed to edit the
 +	submodule located in the directory "submodule/acme".
 +	4) After editing, utilize `make cp-docs-main` and `make cp-read-main` to transfer the docs
