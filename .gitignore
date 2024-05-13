@@ -1,6 +1,7 @@
 .idea/
 .terraform/
 bin/
+dist/
 modules-dev/
 /pkg/
 *.dll
