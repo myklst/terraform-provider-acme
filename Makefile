@@ -5,11 +5,11 @@ ORI_SUBMODULE_NAME ?= submodule/acme_copy
 RM_SUBMODULE_NAME ?= submodule/acme
 
 .PHONY: git-submodule-update
-update-submodule:
+git-submodule-update:
 	git submodule update --init --recursive
 
 .PHONY: copy-submodule
-cp-submodule:
+copy-submodule:
 	cp -r submodule/acme submodule/acme_copy
 
 .PHONY: create-patch
@@ -31,10 +31,9 @@ create-patch:
 	diff -u $(ORI_SUBMODULE_NAME)/go.sum $(SUBMODULE_PATH)/go.sum > ./patch/$(SUBMODULE_VERSION)/go.sum.patch || exit 0
 	diff -u $(ORI_SUBMODULE_NAME)/main.go $(SUBMODULE_PATH)/main.go > ./patch/$(SUBMODULE_VERSION)/main.go.patch || exit 0
 	diff -u $(ORI_SUBMODULE_NAME)/proto/dnsplugin/v1/dnsplugin.proto $(SUBMODULE_PATH)/proto/dnsplugin/v1/dnsplugin.proto > ./patch/$(SUBMODULE_VERSION)/dnsplugin.proto.patch || exit 0
-	diff -u $(ORI_SUBMODULE_NAME)/README.md $(SUBMODULE_PATH)/README.md > ./patch/$(SUBMODULE_VERSION)/README.md.patch || exit 0
 
 .PHONY: patch-file
-patching:
+patch-file:
 	-patch -p0 $(SUBMODULE_PATH)/acme/acme_structure.go < ./patch/$(PATCH_APPLY_VERSION)/acme_structure.go.patch
 	-patch -p0 $(SUBMODULE_PATH)/acme/certificate_challenges.go < ./patch/$(PATCH_APPLY_VERSION)/certificate_challenges.go.patch
 	-patch -p0 $(SUBMODULE_PATH)/acme/dnsplugin/client.go < ./patch/$(PATCH_APPLY_VERSION)/client.go.patch
@@ -52,15 +51,14 @@ patching:
 	-patch -p0 $(SUBMODULE_PATH)/go.sum < ./patch/$(PATCH_APPLY_VERSION)/go.sum.patch
 	-patch -p0 $(SUBMODULE_PATH)/main.go < ./patch/$(PATCH_APPLY_VERSION)/main.go.patch
 	-patch -p0 $(SUBMODULE_PATH)/proto/dnsplugin/v1/dnsplugin.proto < ./patch/$(PATCH_APPLY_VERSION)/dnsplugin.proto.patch
-	-patch -p0 $(SUBMODULE_PATH)/README.md < ./patch/$(PATCH_APPLY_VERSION)/README.md.patch
 
 # copy the new docs to the main to have docs on terraform registry.
 .PHONY: copy-docs-main
-cp-docs-main:
+copy-docs-main:
 	cp -r submodule/acme/docs .
 
 .PHONY: copy-readme-main
-cp-readme-main:
+copy-readme-main:
 	cp -r submodule/acme/README.md .
 
 # Remove submodule
@@ -75,6 +73,6 @@ rm-submodule-acme:
 # Use in github action to move the submodule to the main
 # for running the gorelease
 #########################################################
-.PHONY: move-sub-module-to-main
+.PHONY: move-sub-to-main
 move-sub-to-main:
 	rsync -av --progress ./submodule/acme/ . --exclude .git --exclude .gitignore --exclude GNUmakefile --exclude .github/ --exclude *.md
