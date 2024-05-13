@@ -36,8 +36,8 @@ jobs:
         run: make git-submodule-update
       - name: patch-file
         run: make patch-file
-      - name: move submodule file to main
-        run: make move-sub-to-main
+      # - name: move submodule file to main
+      #   run: make move-sub-to-main
       - name: Cache (Go Modules)
         uses: actions/cache@v3
         env:
