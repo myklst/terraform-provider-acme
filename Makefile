@@ -75,4 +75,11 @@ rm-submodule-acme:
 #########################################################
 .PHONY: move-sub-to-main
 move-sub-to-main:
-	rsync -av --progress ./submodule/acme/ . --exclude .git --exclude .gitignore --exclude GNUmakefile --exclude .github/ --exclude *.md
+	rsync -av --progress ./submodule/acme/ . \
+	  --exclude .git                         \
+	  --exclude .gitignore                   \
+	  --exclude GNUmakefile                  \
+	  --exclude .github/                     \
+	  --exclude *.md                         \
+	  --exclude CHANGELOG.md                 \
+	  --exclude README.md

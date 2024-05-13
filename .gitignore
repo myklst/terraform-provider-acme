@@ -32,3 +32,14 @@ terraform-provider-acme
 .direnv/
 
 coverage.out
+
+acme/
+build-support/
+docs/
+proto/
+/.envrc
+/.goreleaser.yml
+/LICENSE
+/*.go
+/go.*
+/flake.*
