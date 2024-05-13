@@ -1,0 +1,11 @@
+--- submodule/acme_copy/acme/dnsplugin/client.go	2024-05-13 12:52:52.496124373 +0800
++++ submodule/acme/acme/dnsplugin/client.go	2024-05-13 12:53:04.844254546 +0800
+@@ -10,7 +10,7 @@
+ 
+ 	"github.com/go-acme/lego/v4/challenge"
+ 	"github.com/hashicorp/go-plugin"
+-	dnspluginproto "github.com/vancluever/terraform-provider-acme/v2/proto/dnsplugin/v1"
++	dnspluginproto "github.com/myklst/terraform-provider-acme/v2/proto/dnsplugin/v1"
+ )
+ 
+ // NewClient creates a new DNS provider instance by dispatching to itself via

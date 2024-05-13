@@ -1,0 +1,15 @@
+--- submodule/acme_copy/proto/dnsplugin/v1/dnsplugin.proto	2024-05-13 12:52:52.544124879 +0800
++++ submodule/acme/proto/dnsplugin/v1/dnsplugin.proto	2024-05-13 12:53:04.848254588 +0800
+@@ -4,10 +4,10 @@
+ 
+ import "google/protobuf/duration.proto";
+ 
+-option go_package = "github.com/vancluever/terraform-provider-acme/proto/dnsplugin/v1";
++option go_package = "github.com/myklst/terraform-provider-acme/proto/dnsplugin/v1";
+ 
+ // DNSProviderService is a protobuf wrapper for the acme DNS challenge API. This
+-// is designed to be used to wrap an instance of DNS providers in 
++// is designed to be used to wrap an instance of DNS providers in
+ service DNSProviderService {
+   // Configure needs to be called to initialize the provider and set the
+   // configuration.

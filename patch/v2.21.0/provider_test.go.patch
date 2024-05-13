@@ -1,0 +1,11 @@
+--- submodule/acme_copy/acme/provider_test.go	2024-05-13 12:52:52.500124415 +0800
++++ submodule/acme/acme/provider_test.go	2024-05-13 12:53:04.844254546 +0800
+@@ -14,7 +14,7 @@
+ 
+ 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+ 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+-	"github.com/vancluever/terraform-provider-acme/v2/acme/dnsplugin"
++	"github.com/myklst/terraform-provider-acme/v2/acme/dnsplugin"
+ )
+ 
+ func testAccProviderAcme() *schema.Provider {

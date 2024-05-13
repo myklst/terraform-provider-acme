@@ -1,0 +1,13 @@
+--- submodule/acme_copy/main.go	2024-05-13 12:52:52.544124879 +0800
++++ submodule/acme/main.go	2024-05-13 12:53:04.848254588 +0800
+@@ -4,8 +4,8 @@
+ 	"os"
+ 
+ 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
+-	"github.com/vancluever/terraform-provider-acme/v2/acme"
+-	"github.com/vancluever/terraform-provider-acme/v2/acme/dnsplugin"
++	"github.com/myklst/terraform-provider-acme/v2/acme"
++	"github.com/myklst/terraform-provider-acme/v2/acme/dnsplugin"
+ )
+ 
+ func main() {

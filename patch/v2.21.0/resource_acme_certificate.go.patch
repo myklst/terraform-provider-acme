@@ -1,0 +1,190 @@
+--- submodule/acme_copy/acme/resource_acme_certificate.go	2024-05-13 12:52:52.500124415 +0800
++++ submodule/acme/acme/resource_acme_certificate.go	2024-05-13 12:53:04.844254546 +0800
+@@ -7,6 +7,7 @@
+ 	"log"
+ 	"time"
+ 
++	"github.com/cenkalti/backoff/v4"
+ 	"github.com/go-acme/lego/v4/acme"
+ 	"github.com/go-acme/lego/v4/certificate"
+ 	"github.com/go-acme/lego/v4/challenge/dns01"
+@@ -271,6 +272,12 @@
+ 				ValidateFunc: validateRevocationReason,
+ 			},
+ 		},
++		Timeouts: &schema.ResourceTimeout{
++			Create: schema.DefaultTimeout(DefaultMaxElapsedTime),
++			Read:   schema.DefaultTimeout(DefaultMaxElapsedTime),
++			Update: schema.DefaultTimeout(DefaultMaxElapsedTime),
++			Delete: schema.DefaultTimeout(DefaultMaxElapsedTime),
++		},
+ 	}
+ }
+ 
+@@ -306,11 +313,28 @@
+ 		if err != nil {
+ 			return err
+ 		}
+-		cert, err = client.Certificate.ObtainForCSR(certificate.ObtainForCSRRequest{
+-			CSR:            csr,
+-			Bundle:         true,
+-			PreferredChain: d.Get("preferred_chain").(string),
+-		})
++
++		obtainCertCSR := func() error {
++			cert, err = client.Certificate.ObtainForCSR(certificate.ObtainForCSRRequest{
++				CSR:            csr,
++				Bundle:         true,
++				PreferredChain: d.Get("preferred_chain").(string),
++			})
++			if err != nil {
++				if isAbleToRetry(err.Error()) {
++					return err
++				} else {
++					return backoff.Permanent(err)
++				}
++			}
++			return nil
++		}
++		reconnectBackoff := backoff.NewExponentialBackOff()
++		reconnectBackoff.MaxElapsedTime = DefaultMaxElapsedTime
++		err = backoff.Retry(obtainCertCSR, reconnectBackoff)
++		if err != nil {
++			return err
++		}
+ 	} else {
+ 		cn := d.Get("common_name").(string)
+ 		domains := []string{cn}
+@@ -322,12 +346,28 @@
+ 			}
+ 		}
+ 
+-		cert, err = client.Certificate.Obtain(certificate.ObtainRequest{
+-			Domains:        domains,
+-			Bundle:         true,
+-			MustStaple:     d.Get("must_staple").(bool),
+-			PreferredChain: d.Get("preferred_chain").(string),
+-		})
++		obtainCert := func() error {
++			cert, err = client.Certificate.Obtain(certificate.ObtainRequest{
++				Domains:        domains,
++				Bundle:         true,
++				MustStaple:     d.Get("must_staple").(bool),
++				PreferredChain: d.Get("preferred_chain").(string),
++			})
++			if err != nil {
++				if isAbleToRetry(err.Error()) {
++					return err
++				} else {
++					return backoff.Permanent(err)
++				}
++			}
++			return nil
++		}
++		reconnectBackoff := backoff.NewExponentialBackOff()
++		reconnectBackoff.MaxElapsedTime = DefaultMaxElapsedTime
++		err = backoff.Retry(obtainCert, reconnectBackoff)
++		if err != nil {
++			return err
++		}
+ 	}
+ 
+ 	if err != nil {
+@@ -354,7 +394,21 @@
+ 			return err
+ 		}
+ 
+-		srcCR, err := client.Certificate.Get(d.Get("certificate_url").(string), true)
++		var srcCR *certificate.Resource
++		getCert := func() error {
++			srcCR, err = client.Certificate.Get(d.Get("certificate_url").(string), true)
++			if err != nil {
++				if isAbleToRetry(err.Error()) {
++					return err
++				} else {
++					return backoff.Permanent(err)
++				}
++			}
++			return nil
++		}
++		reconnectBackoff := backoff.NewExponentialBackOff()
++		reconnectBackoff.MaxElapsedTime = DefaultMaxElapsedTime
++		err = backoff.Retry(getCert, reconnectBackoff)
+ 		if err != nil {
+ 			// There are probably some cases that we will want to just drop
+ 			// the resource if there's been an issue, but seeing as this is
+@@ -454,7 +508,21 @@
+ 		return err
+ 	}
+ 
+-	newCert, err := client.Certificate.Renew(*cert, true, d.Get("must_staple").(bool), d.Get("preferred_chain").(string))
++	var newCert *certificate.Resource
++	renewCert := func() error {
++		newCert, err = client.Certificate.Renew(*cert, true, d.Get("must_staple").(bool), d.Get("preferred_chain").(string))
++		if err != nil {
++			if isAbleToRetry(err.Error()) {
++				return err
++			} else {
++				return backoff.Permanent(err)
++			}
++		}
++		return nil
++	}
++	reconnectBackoff := backoff.NewExponentialBackOff()
++	reconnectBackoff.MaxElapsedTime = DefaultMaxElapsedTime
++	err = backoff.Retry(renewCert, reconnectBackoff)
+ 	if err != nil {
+ 		return err
+ 	}
+@@ -487,17 +555,43 @@
+ 	}
+ 
+ 	if remaining >= 0 {
+-		maybeReason, ok := d.GetOk("revoke_certificate_reason")
+-		if ok {
+-			reason := RevocationReason(maybeReason.(string))
+-			reasonNum, err := GetRevocationReason(reason)
+-			if err != nil {
+-				return err
++		revokeCert := func() error {
++			maybeReason, ok := d.GetOk("revoke_certificate_reason")
++			if ok {
++				reason := RevocationReason(maybeReason.(string))
++				reasonNum, err := GetRevocationReason(reason)
++				if err != nil {
++					return err
++				}
++				if err = client.Certificate.RevokeWithReason(cert.Certificate, &reasonNum); err != nil {
++					if isAbleToRetry(err.Error()) {
++						return err
++					} else {
++						return backoff.Permanent(err)
++					}
++
++				}
++				return nil
+ 			}
+-			return client.Certificate.RevokeWithReason(cert.Certificate, &reasonNum)
++
++			if err = client.Certificate.Revoke(cert.Certificate); err != nil {
++				if isAbleToRetry(err.Error()) {
++					return err
++				} else {
++					return backoff.Permanent(err)
++				}
++			}
++
++			return nil
++		}
++		reconnectBackoff := backoff.NewExponentialBackOff()
++		reconnectBackoff.MaxElapsedTime = DefaultMaxElapsedTime
++		err = backoff.Retry(revokeCert, reconnectBackoff)
++		if err != nil {
++			return err
+ 		}
+-		return client.Certificate.Revoke(cert.Certificate)
+ 	}
++
+ 	return nil
+ }
+ 
