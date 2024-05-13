@@ -12,8 +12,9 @@
 name: release
 on:
   push:
-    # branches:
-    #   - main
+    branches:
+      # - main
+      - acme-v2.21.0
     tags:
       - "v*"
 
