@@ -1,5 +1,5 @@
---- submodule/acme_copy/.goreleaser.yml	2024-05-14 14:51:54.672508536 +0800
-+++ submodule/acme/.goreleaser.yml	2024-05-14 14:53:09.617830400 +0800
+--- submodule/acme_copy/.goreleaser.yml	2024-05-14 15:23:45.474158974 +0800
++++ submodule/acme/.goreleaser.yml	2024-05-14 15:23:55.686329204 +0800
 @@ -5,42 +5,43 @@
      # this is just an example and not a requirement for provider building/publishing
      - go mod tidy
@@ -53,7 +53,7 @@
 +    ignore:
 +      - goos: darwin
 +        goarch: "386"
-+    binary: "{{ .ProjectName }}_v{{ .Env.GITHUB_REF_NAME }}"
++    binary: "{{ .ProjectName }}_{{ .Env.GITHUB_REF_NAME }}"
  archives:
 -- format: zip
 -  name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
@@ -74,14 +74,13 @@
        # need to pass the batch flag to indicate its not interactive.
        - "--batch"
        - "--local-user"
-@@ -50,6 +51,13 @@
+@@ -50,6 +51,12 @@
        - "--detach-sign"
        - "${artifact}"
  release:
 +  github:
 +    owner: Kid-debug
 +    name: terraform-provider-acme-fork
-+  target_commitish: "{{ .Commit }}"
 +  extra_files:
 +    - glob: "terraform-registry-manifest.json"
 +      name_template: "{{ .ProjectName }}_{{ .Env.GITHUB_REF_NAME }}_manifest.json"
