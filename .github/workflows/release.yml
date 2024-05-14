@@ -61,7 +61,7 @@ jobs:
       - run: |
           cd submodule/acme
           go mod verify
-          rm -rf .git/
+          rm -rf .git
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           GITHUB_ACTOR: ${{github.actor}}
