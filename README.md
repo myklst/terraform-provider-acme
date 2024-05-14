@@ -17,11 +17,11 @@ Documentation for this provider can be found at [Terraform ACME Provider](https:
 
 ## Why Patch
 
-To make use repository of Terraform ACME provider by vancluever and customize backoff retry functionalities when ordering/revoking/making challange to certificates.
+To make use repository of Terraform ACME provider by vancluever and customize backoff retry functionalities when ordering/revoking/making challange for certificates.
 
-Facing issue unable to apply the patch, mean that the version might changed or the patch files has beend modified.
+Facing issue unable to apply the patch? Probably the version might changed or the patch files has beend modified.
 
-If the version of Terraform ACME provider by vancluever has been changes, you might need to patch agains.
+If the version of Terraform ACME provider by vancluever has been changed, you might need to recreate new patch.
 
 ## Retryable Errors
 
