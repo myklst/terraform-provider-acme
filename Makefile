@@ -14,23 +14,23 @@ copy-submodule:
 
 .PHONY: create-patch
 create-patch:
-	# diff -u $(ORI_SUBMODULE_NAME)/acme/acme_structure.go $(SUBMODULE_PATH)/acme/acme_structure.go > ./patch/$(SUBMODULE_VERSION)/acme_structure.go.patch  || exit 0
-	# diff -u $(ORI_SUBMODULE_NAME)/acme/certificate_challenges.go $(SUBMODULE_PATH)/acme/certificate_challenges.go > ./patch/$(SUBMODULE_VERSION)/certificate_challenges.go.patch  || exit 0
-	# diff -u $(ORI_SUBMODULE_NAME)/acme/dnsplugin/client.go $(SUBMODULE_PATH)/acme/dnsplugin/client.go > ./patch/$(SUBMODULE_VERSION)/client.go.patch  || exit 0
-	# diff -u $(ORI_SUBMODULE_NAME)/acme/dnsplugin/plugin.go $(SUBMODULE_PATH)/acme/dnsplugin/plugin.go > ./patch/$(SUBMODULE_VERSION)/plugin.go.patch || exit 0
-	# diff -u $(ORI_SUBMODULE_NAME)/acme/dnsplugin/plugin_test.go $(SUBMODULE_PATH)/acme/dnsplugin/plugin_test.go > ./patch/$(SUBMODULE_VERSION)/plugin_test.go.patch || exit 0
-	# diff -N $(ORI_SUBMODULE_NAME)/acme/errorlist.go $(SUBMODULE_PATH)/acme/errorlist.go > ./patch/$(SUBMODULE_VERSION)/errorlist.go.patch || exit 0
-	# diff -u $(ORI_SUBMODULE_NAME)/acme/provider_test.go $(SUBMODULE_PATH)/acme/provider_test.go > ./patch/$(SUBMODULE_VERSION)/provider_test.go.patch || exit 0
-	# diff -u $(ORI_SUBMODULE_NAME)/acme/resource_acme_certificate.go $(SUBMODULE_PATH)/acme/resource_acme_certificate.go > ./patch/$(SUBMODULE_VERSION)/resource_acme_certificate.go.patch || exit 0
-	# diff -u $(ORI_SUBMODULE_NAME)/acme/resource_acme_registration.go $(SUBMODULE_PATH)/acme/resource_acme_registration.go > ./patch/$(SUBMODULE_VERSION)/resource_acme_registration.go.patch || exit 0
-	# diff -u $(ORI_SUBMODULE_NAME)/docs/index.md $(SUBMODULE_PATH)/docs/index.md > ./patch/$(SUBMODULE_VERSION)/index.md.patch || exit 0
-	# diff -u $(ORI_SUBMODULE_NAME)/docs/resources/certificate.md $(SUBMODULE_PATH)/docs/resources/certificate.md > ./patch/$(SUBMODULE_VERSION)/certificate.md.patch || exit 0
-	# diff -u $(ORI_SUBMODULE_NAME)/.gitignore $(SUBMODULE_PATH)/.gitignore > ./patch/$(SUBMODULE_VERSION)/.gitignore.patch || exit 0
-	# diff -u $(ORI_SUBMODULE_NAME)/go.mod $(SUBMODULE_PATH)/go.mod > ./patch/$(SUBMODULE_VERSION)/go.mod.patch || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/acme/acme_structure.go $(SUBMODULE_PATH)/acme/acme_structure.go > ./patch/$(SUBMODULE_VERSION)/acme_structure.go.patch  || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/acme/certificate_challenges.go $(SUBMODULE_PATH)/acme/certificate_challenges.go > ./patch/$(SUBMODULE_VERSION)/certificate_challenges.go.patch  || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/acme/dnsplugin/client.go $(SUBMODULE_PATH)/acme/dnsplugin/client.go > ./patch/$(SUBMODULE_VERSION)/client.go.patch  || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/acme/dnsplugin/plugin.go $(SUBMODULE_PATH)/acme/dnsplugin/plugin.go > ./patch/$(SUBMODULE_VERSION)/plugin.go.patch || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/acme/dnsplugin/plugin_test.go $(SUBMODULE_PATH)/acme/dnsplugin/plugin_test.go > ./patch/$(SUBMODULE_VERSION)/plugin_test.go.patch || exit 0
+	diff -N $(ORI_SUBMODULE_NAME)/acme/errorlist.go $(SUBMODULE_PATH)/acme/errorlist.go > ./patch/$(SUBMODULE_VERSION)/errorlist.go.patch || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/acme/provider_test.go $(SUBMODULE_PATH)/acme/provider_test.go > ./patch/$(SUBMODULE_VERSION)/provider_test.go.patch || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/acme/resource_acme_certificate.go $(SUBMODULE_PATH)/acme/resource_acme_certificate.go > ./patch/$(SUBMODULE_VERSION)/resource_acme_certificate.go.patch || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/acme/resource_acme_registration.go $(SUBMODULE_PATH)/acme/resource_acme_registration.go > ./patch/$(SUBMODULE_VERSION)/resource_acme_registration.go.patch || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/docs/index.md $(SUBMODULE_PATH)/docs/index.md > ./patch/$(SUBMODULE_VERSION)/index.md.patch || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/docs/resources/certificate.md $(SUBMODULE_PATH)/docs/resources/certificate.md > ./patch/$(SUBMODULE_VERSION)/certificate.md.patch || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/.gitignore $(SUBMODULE_PATH)/.gitignore > ./patch/$(SUBMODULE_VERSION)/.gitignore.patch || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/go.mod $(SUBMODULE_PATH)/go.mod > ./patch/$(SUBMODULE_VERSION)/go.mod.patch || exit 0
 	diff -u $(ORI_SUBMODULE_NAME)/.goreleaser.yml $(SUBMODULE_PATH)/.goreleaser.yml > ./patch/$(SUBMODULE_VERSION)/.goreleaser.yml.patch || exit 0
-	# diff -u $(ORI_SUBMODULE_NAME)/go.sum $(SUBMODULE_PATH)/go.sum > ./patch/$(SUBMODULE_VERSION)/go.sum.patch || exit 0
-	# diff -u $(ORI_SUBMODULE_NAME)/main.go $(SUBMODULE_PATH)/main.go > ./patch/$(SUBMODULE_VERSION)/main.go.patch || exit 0
-	# diff -u $(ORI_SUBMODULE_NAME)/proto/dnsplugin/v1/dnsplugin.proto $(SUBMODULE_PATH)/proto/dnsplugin/v1/dnsplugin.proto > ./patch/$(SUBMODULE_VERSION)/dnsplugin.proto.patch || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/go.sum $(SUBMODULE_PATH)/go.sum > ./patch/$(SUBMODULE_VERSION)/go.sum.patch || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/main.go $(SUBMODULE_PATH)/main.go > ./patch/$(SUBMODULE_VERSION)/main.go.patch || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/proto/dnsplugin/v1/dnsplugin.proto $(SUBMODULE_PATH)/proto/dnsplugin/v1/dnsplugin.proto > ./patch/$(SUBMODULE_VERSION)/dnsplugin.proto.patch || exit 0
 	diff -N $(ORI_SUBMODULE_NAME)/terraform-registry-manifest.json $(SUBMODULE_PATH)/terraform-registry-manifest.json > ./patch/$(SUBMODULE_VERSION)/terraform-registry-manifest.json.patch || exit 0
 
 .PHONY: patch-file
