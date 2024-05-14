@@ -12,27 +12,17 @@ website](https://www.terraform.io/) and the [GitHub project page](https://github
 
 ## Documentation
 
-This is a forked, reworked repository of Terraform ACME provider by vancluever to provide backoff retry functionalities.
+This is a submodule repository of Terraform ACME provider by vancluever.
 Documentation for this provider can be found at [Terraform ACME Provider](https://registry.terraform.io/providers/vancluever/acme/latest/docs)
+
+## Why Patch
+
+To make use repository of Terraform ACME provider by vancluever and customize backoff retry functionalities when ordering/revoking/making challange to certificates.
+
+Facing issue unable to apply the patch, mean that the version might changed or the patch files has beend modified.
+
+If the version of Terraform ACME provider by vancluever has been changes, you might need to patch agains.
 
 ## Retryable Errors
 
 Add retryable errors under `./acme/errorlist.go` such as API limiting and throttling.
-
-## How to Patch
-
-1) Please review the Makefile.
-
-2) Perform the following steps sequentially:
-
-    1) Execute `make git-submodule-update`.
-
-    2) Execute `make copy-submodule`.
-
-    3) If necessary, apply patches before editing by running `make patch-file`. Proceed to edit the submodule located in the directory "submodule/acme".
-
-    4) After editing, utilize `make copy-docs-main` and `make cp-read-main` to transfer the docs
-    directory and README file to the main directory.
-
-    5) Finally, use `create-patch` to generate patch files. Ensure to customize the command based
-    on your requirements.
