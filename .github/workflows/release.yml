@@ -27,6 +27,7 @@ jobs:
   goreleaser:
     runs-on: ubuntu-latest
     steps:
+      - run: env
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
@@ -60,6 +61,7 @@ jobs:
       - run: |
           cd submodule/acme
           go mod verify
+          rm -rf .git/
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           GITHUB_ACTOR: ${{github.actor}}
