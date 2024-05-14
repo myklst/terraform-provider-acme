@@ -1,5 +1,5 @@
---- submodule/acme_copy/.goreleaser.yml	2024-05-14 14:24:02.076970407 +0800
-+++ submodule/acme/.goreleaser.yml	2024-05-14 14:24:10.957011303 +0800
+--- submodule/acme_copy/.goreleaser.yml	2024-05-14 14:51:54.672508536 +0800
++++ submodule/acme/.goreleaser.yml	2024-05-14 14:53:09.617830400 +0800
 @@ -5,42 +5,43 @@
      # this is just an example and not a requirement for provider building/publishing
      - go mod tidy
@@ -39,7 +39,7 @@
 +    flags:
 +      - -trimpath
 +    ldflags:
-+      - "-s -w -X main.version={{.Version}} -X main.commit={{.Commit}}"
++      - "-s -w -X main.version={{ .Env.GITHUB_REF_NAME }} -X main.commit={{.Commit}}"
 +    goos:
 +      - freebsd
 +      - windows
@@ -53,18 +53,18 @@
 +    ignore:
 +      - goos: darwin
 +        goarch: "386"
-+    binary: "{{ .ProjectName }}_v{{ .Version }}"
++    binary: "{{ .ProjectName }}_v{{ .Env.GITHUB_REF_NAME }}"
  archives:
 -- format: zip
 -  name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
 +  - format: zip
-+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
++    name_template: "{{ .ProjectName }}_{{ .Env.GITHUB_REF_NAME }}_{{ .Os }}_{{ .Arch }}"
  checksum:
 -  name_template: '{{ .ProjectName }}_{{ .Version }}_SHA256SUMS'
 +  extra_files:
 +    - glob: "terraform-registry-manifest.json"
-+      name_template: "{{ .ProjectName }}_{{ .Version }}_manifest.json"
-+  name_template: "{{ .ProjectName }}_{{ .Version }}_SHA256SUMS"
++      name_template: "{{ .ProjectName }}_{{ .Env.GITHUB_REF_NAME }}_manifest.json"
++  name_template: "{{ .ProjectName }}_{{ .Env.GITHUB_REF_NAME }}_SHA256SUMS"
    algorithm: sha256
  signs:
    - artifacts: checksum
@@ -81,10 +81,10 @@
 +  github:
 +    owner: Kid-debug
 +    name: terraform-provider-acme-fork
-+  tag: "{{ .Env.GITHUB_REF_NAME }}"
++  target_commitish: "{{ .Commit }}"
 +  extra_files:
 +    - glob: "terraform-registry-manifest.json"
-+      name_template: "{{ .ProjectName }}_{{ .Version }}_manifest.json"
++      name_template: "{{ .ProjectName }}_{{ .Env.GITHUB_REF_NAME }}_manifest.json"
    # If you want to manually examine the release before its live, uncomment this line:
    # draft: true
  changelog:
