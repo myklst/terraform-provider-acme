@@ -59,7 +59,6 @@ jobs:
           restore-keys: |
             ${{ env.cache-name}}-
       - run: |
-          cp terraform-registry-manifest.json submodule/acme
           cd submodule/acme
           go mod verify
         env:
