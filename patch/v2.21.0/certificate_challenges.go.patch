@@ -1,5 +1,5 @@
---- submodule/acme_copy/acme/certificate_challenges.go	2024-05-13 12:52:52.496124373 +0800
-+++ submodule/acme/acme/certificate_challenges.go	2024-05-13 12:53:04.844254546 +0800
+--- submodule/acme_copy/acme/certificate_challenges.go	2024-05-14 17:59:56.491705994 +0800
++++ submodule/acme/acme/certificate_challenges.go	2024-05-15 09:45:26.984173230 +0800
 @@ -5,6 +5,7 @@
  	"strconv"
  	"time"
@@ -8,15 +8,6 @@
  	"github.com/go-acme/lego/v4/challenge"
  	"github.com/go-acme/lego/v4/challenge/dns01"
  	"github.com/go-acme/lego/v4/challenge/http01"
-@@ -15,7 +16,7 @@
- 	"github.com/go-acme/lego/v4/providers/http/webroot"
- 	"github.com/hashicorp/go-multierror"
- 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
--	"github.com/vancluever/terraform-provider-acme/v2/acme/dnsplugin"
-+	"github.com/myklst/terraform-provider-acme/v2/acme/dnsplugin"
- )
- 
- // setCertificateChallengeProviders sets all of the challenge providers in the
 @@ -48,7 +49,20 @@
  			}
  		}

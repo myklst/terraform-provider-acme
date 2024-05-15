@@ -1,8 +1,7 @@
---- submodule/acme_copy/go.mod	2024-05-13 12:52:52.540124837 +0800
-+++ submodule/acme/go.mod	2024-05-13 12:53:04.844254546 +0800
+--- submodule/acme_copy/go.mod	2024-05-14 17:59:56.499706338 +0800
++++ submodule/acme/go.mod	2024-05-14 18:00:40.593603707 +0800
 @@ -1,11 +1,10 @@
--module github.com/vancluever/terraform-provider-acme/v2
-+module github.com/myklst/terraform-provider-acme/v2
+ module github.com/vancluever/terraform-provider-acme/v2
  
 -go 1.21
 -
