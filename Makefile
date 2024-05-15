@@ -21,8 +21,6 @@ create-patch:
 	diff -N $(ORI_SUBMODULE_NAME)/acme/errorlist.go $(SUBMODULE_PATH)/acme/errorlist.go > ./patch/$(SUBMODULE_VERSION)/errorlist.go.patch || exit 0
 	diff -u $(ORI_SUBMODULE_NAME)/acme/resource_acme_certificate.go $(SUBMODULE_PATH)/acme/resource_acme_certificate.go > ./patch/$(SUBMODULE_VERSION)/resource_acme_certificate.go.patch || exit 0
 	diff -u $(ORI_SUBMODULE_NAME)/acme/resource_acme_registration.go $(SUBMODULE_PATH)/acme/resource_acme_registration.go > ./patch/$(SUBMODULE_VERSION)/resource_acme_registration.go.patch || exit 0
-	diff -u $(ORI_SUBMODULE_NAME)/docs/index.md $(SUBMODULE_PATH)/docs/index.md > ./patch/$(SUBMODULE_VERSION)/index.md.patch || exit 0
-	diff -u $(ORI_SUBMODULE_NAME)/.gitignore $(SUBMODULE_PATH)/.gitignore > ./patch/$(SUBMODULE_VERSION)/.gitignore.patch || exit 0
 	diff -u $(ORI_SUBMODULE_NAME)/go.mod $(SUBMODULE_PATH)/go.mod > ./patch/$(SUBMODULE_VERSION)/go.mod.patch || exit 0
 	diff -u $(ORI_SUBMODULE_NAME)/.goreleaser.yml $(SUBMODULE_PATH)/.goreleaser.yml > ./patch/$(SUBMODULE_VERSION)/.goreleaser.yml.patch || exit 0
 	diff -u $(ORI_SUBMODULE_NAME)/go.sum $(SUBMODULE_PATH)/go.sum > ./patch/$(SUBMODULE_VERSION)/go.sum.patch || exit 0
@@ -35,8 +33,6 @@ patch-file:
 	-patch -p0 $(SUBMODULE_PATH)/acme/errorlist.go < ./patch/$(PATCH_APPLY_VERSION)/errorlist.go.patch
 	-patch -p0 $(SUBMODULE_PATH)/acme/resource_acme_certificate.go < ./patch/$(PATCH_APPLY_VERSION)/resource_acme_certificate.go.patch
 	-patch -p0 $(SUBMODULE_PATH)/acme/resource_acme_registration.go < ./patch/$(PATCH_APPLY_VERSION)/resource_acme_registration.go.patch
-	-patch -p0 $(SUBMODULE_PATH)/docs/index.md < ./patch/$(PATCH_APPLY_VERSION)/index.md.patch
-	-patch -p0 $(SUBMODULE_PATH)/.gitignore < ./patch/$(PATCH_APPLY_VERSION)/.gitignore.patch
 	-patch -p0 $(SUBMODULE_PATH)/go.mod < ./patch/$(PATCH_APPLY_VERSION)/go.mod.patch
 	-patch -p0 $(SUBMODULE_PATH)/.goreleaser.yml < ./patch/$(PATCH_APPLY_VERSION)/.goreleaser.yml.patch
 	-patch -p0 $(SUBMODULE_PATH)/go.sum < ./patch/$(PATCH_APPLY_VERSION)/go.sum.patch

@@ -39,10 +39,6 @@ Add dependencies that are needed for the changes.
 
 Add dependencies that are needed for the changes.
 
-### index.md.patch
-
-Edit the terraform documentation to point to the correct provider source and version.
-
 ### resource_acme_certificate.go.patch
 
 Add a backoff feature on the action that relates to resource acme certification.
