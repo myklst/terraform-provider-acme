@@ -21,36 +21,28 @@ Documentation for this provider can be found at [Terraform ACME Provider](https:
 To release extra terraform registry manifest file when performing go release.
 
 ### acme_structure.go.patch
-
 Add backoff feature on the expandACMEClient function.
 
 ### certificate_challenges.go.patch
-
 Add backoff feature on the action that relates to certificate challenges.
 
 ### errorlist.go.patch
 Create a new file that contains the definition of isAbleToRetry function.
 
 ### go.mod.patch
-
 Add dependencies that are needed for the changes.
 
 ### go.sum.patch
-
 Add dependencies that are needed for the changes.
 
 ### resource_acme_certificate.go.patch
-
 Add a backoff feature on the action that relates to resource acme certification.
 
 ### resource_acme_registration.go.patch
-
 Add a backoff feature on the action that relates to resource acme registration.
 
 ### terraform-registry-manifest.json.patch
-
 Create a new file that contains the terraform registry manifest configuration. Needed when performing goreleaser.
 
 ## Retryable Errors
-
 Add retryable errors under `./acme/errorlist.go` such as API limiting and throttling.
