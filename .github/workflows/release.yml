@@ -55,11 +55,9 @@ jobs:
       - run: |
           cd submodule/acme
           go mod verify
+          # remove submodule's git to prevent it refer back to the submodule's git
+          # when performing goreleaser.
           rm -rf .git
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          GITHUB_ACTOR: ${{github.actor}}
-          GITHUB_REPOSITORY: ${{github.repository}}
       - name: Import GPG key
         id: import_gpg
         uses: paultyng/ghaction-import-gpg@v2.1.0
