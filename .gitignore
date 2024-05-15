@@ -14,12 +14,3 @@ terraform.tfstate
 coverage.out
 
 submodule/acme/
-build-support/
-docs/
-proto/
-/.envrc
-/.goreleaser.yml
-/LICENSE
-/*.go
-/go.*
-/flake.*
