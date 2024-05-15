@@ -3,6 +3,8 @@ PATCH_APPLY_VERSION ?= v2.21.0
 SUBMODULE_PATH ?= submodule/acme
 ORI_SUBMODULE_NAME ?= submodule/acme_copy
 RM_SUBMODULE_NAME ?= submodule/acme
+CUSTOM_PROVIDER_NAME ?= terraform-provider-acme
+CUSTOM_PROVIDER_URL ?= example.local/myklst/acme
 
 .PHONY: git-submodule-update
 git-submodule-update:
@@ -39,6 +41,16 @@ patch-file:
 	-patch -p0 $(SUBMODULE_PATH)/.goreleaser.yml < ./patch/$(PATCH_APPLY_VERSION)/.goreleaser.yml.patch
 	-patch -p0 $(SUBMODULE_PATH)/go.sum < ./patch/$(PATCH_APPLY_VERSION)/go.sum.patch
 	-patch -p0 $(SUBMODULE_PATH)/terraform-registry-manifest.json < ./patch/$(PATCH_APPLY_VERSION)/terraform-registry-manifest.json.patch
+
+.PHONY: install-local-custom-provider
+install-local-custom-provider:
+	export PROVIDER_LOCAL_PATH='$(CUSTOM_PROVIDER_URL)'
+	cd submodule/acme && go install .
+	GO_INSTALL_PATH="$$(go env GOPATH)/bin"; \
+	HOME_DIR="$$(ls -d ~)"; \
+	mkdir -p  $$HOME_DIR/.terraform.d/plugins/$(CUSTOM_PROVIDER_URL)/0.1.0/linux_amd64/; \
+	cp $$GO_INSTALL_PATH/$(CUSTOM_PROVIDER_NAME) $$HOME_DIR/.terraform.d/plugins/$(CUSTOM_PROVIDER_URL)/0.1.0/linux_amd64/$(CUSTOM_PROVIDER_NAME)
+	unset PROVIDER_LOCAL_PATH
 
 # copy the new docs to the main to have docs on terraform registry.
 .PHONY: copy-docs-main
