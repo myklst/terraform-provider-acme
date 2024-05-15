@@ -24,7 +24,6 @@ jobs:
   goreleaser:
     runs-on: ubuntu-latest
     steps:
-      - run: env
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
