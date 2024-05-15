@@ -13,11 +13,13 @@ name: release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
+
 # Releases need permissions to read and write the repository contents.
 # GitHub considers creating releases and uploading assets as writing contents.
 permissions:
   contents: write
+
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
@@ -25,8 +27,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
-          go-version: '^1.17.5'
+          go-version: "^1.21.0"
           check-latest: true
+      - name: updating submodule
+        run: make git-submodule-update
+      - name: patch-file
+        run: make patch-file
       - name: Cache (Go Modules)
         uses: actions/cache@v3
         env:
@@ -46,7 +52,12 @@ jobs:
           key: ${{ env.cache-name}}-${{ hashFiles(format('{0}/**/*', env.cache-dir)) }}
           restore-keys: |
             ${{ env.cache-name}}-
-      - run: go mod verify
+      - run: |
+          cd submodule/acme
+          go mod verify
+          # remove submodule's git to prevent it refer back to the submodule's git
+          # when performing goreleaser.
+          rm -rf .git
       - name: Import GPG key
         id: import_gpg
         uses: paultyng/ghaction-import-gpg@v2.1.0
@@ -57,7 +68,8 @@ jobs:
         uses: goreleaser/goreleaser-action@v5.0.0
         with:
           version: latest
-          args: release --clean --timeout 60m0s
+          workdir: submodule/acme
+          args: release --clean --timeout 60m0s --skip=validate
         env:
-          GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}

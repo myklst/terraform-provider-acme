@@ -1,0 +1,75 @@
+--- submodule/acme_copy/acme/acme_structure.go	2024-05-13 12:52:52.496124373 +0800
++++ submodule/acme/acme/acme_structure.go	2024-05-13 12:53:04.844254546 +0800
+@@ -12,6 +12,7 @@
+ 	"fmt"
+ 	"time"
+ 
++	"github.com/cenkalti/backoff/v4"
+ 	"github.com/go-acme/lego/v4/certcrypto"
+ 	"github.com/go-acme/lego/v4/certificate"
+ 	"github.com/go-acme/lego/v4/lego"
+@@ -20,6 +21,10 @@
+ 	"software.sslmate.com/src/go-pkcs12"
+ )
+ 
++const (
++	DefaultMaxElapsedTime = 120 * time.Minute
++)
++
+ // acmeUser implements acme.User.
+ type acmeUser struct {
+ 
+@@ -84,17 +89,32 @@
+ 		return nil, nil, fmt.Errorf("error getting user data: %s", err.Error())
+ 	}
+ 
+-	client, err := lego.NewClient(expandACMEClient_config(d, meta, user))
+-	if err != nil {
+-		return nil, nil, err
+-	}
++	var client *lego.Client
+ 
+-	// Populate user's registration resource if needed
+-	if loadReg {
+-		user.Registration, err = client.Registration.ResolveAccountByKey()
++	newClient := func() error {
++		client, err = lego.NewClient(expandACMEClient_config(d, meta, user))
+ 		if err != nil {
+-			return nil, nil, err
++			return err
+ 		}
++
++		// Populate user's registration resource if needed
++		if loadReg {
++			user.Registration, err = client.Registration.ResolveAccountByKey()
++			if err != nil {
++				if isAbleToRetry(err.Error()) {
++					return err
++				} else {
++					return backoff.Permanent(err)
++				}
++			}
++		}
++		return nil
++	}
++	reconnectBackoff := backoff.NewExponentialBackOff()
++	reconnectBackoff.MaxElapsedTime = DefaultMaxElapsedTime
++	err = backoff.Retry(newClient, reconnectBackoff)
++	if err != nil {
++		return nil, nil, err
+ 	}
+ 
+ 	return client, user, nil
+@@ -241,8 +261,11 @@
+ 	cert = pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: cb[0].Raw})
+ 	certNotAfter = cb[0].NotAfter.Format(time.RFC3339)
+ 	issuer = make([]byte, 0)
+-	for _, ic := range cb[1:] {
++	for i, ic := range cb[1:] {
+ 		issuer = append(issuer, pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: ic.Raw})...)
++		if i < len(cb)-2 {
++			issuer = append(issuer, '\n')
++		}
+ 	}
+ 
+ 	return
