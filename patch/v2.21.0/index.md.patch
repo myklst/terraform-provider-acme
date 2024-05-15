@@ -1,11 +1,13 @@
---- submodule/acme_copy/docs/index.md	2024-05-13 12:52:52.540124837 +0800
-+++ submodule/acme/docs/index.md	2024-05-13 12:53:04.844254546 +0800
-@@ -53,7 +53,7 @@
+--- submodule/acme_copy/docs/index.md	2024-05-15 11:53:34.816996692 +0800
++++ submodule/acme/docs/index.md	2024-05-15 11:53:52.817275329 +0800
+@@ -53,8 +53,8 @@
  terraform {
    required_providers {
      acme = {
 -      source  = "vancluever/acme"
+-      version = "~> 2.0"
 +      source  = "myklst/acme"
-       version = "~> 2.0"
++      version = "~> 1.0"
      }
    }
+ }
