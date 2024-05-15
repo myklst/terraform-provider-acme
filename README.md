@@ -17,7 +17,7 @@ Documentation for this provider can be found at [Terraform ACME Provider](https:
 
 ## Why Patch
 
-To make use repository of Terraform ACME provider by vancluever and customize backoff retry functionalities when ordering/revoking/making challange for certificates.
+To make use repository of Terraform ACME provider by vancluever and customize backoff retry functionalities when ordering/revoking/making challange for certificates via ZeroSSL.
 
 Facing issue unable to apply the patch? Probably the version might changed or the patch files has beend modified.
 
