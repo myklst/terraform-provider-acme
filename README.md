@@ -15,13 +15,45 @@ website](https://www.terraform.io/) and the [GitHub project page](https://github
 This is a submodule repository of Terraform ACME provider by vancluever.
 Documentation for this provider can be found at [Terraform ACME Provider](https://registry.terraform.io/providers/vancluever/acme/latest/docs)
 
-## Why Patch
+## Patches
 
-To make use repository of Terraform ACME provider by vancluever and customize backoff retry functionalities when ordering/revoking/making challange for certificates via ZeroSSL.
+### .goreleaser.yml.patch
+To release extra terraform registry manifest file when performing go release.
 
-Facing issue unable to apply the patch? Probably the version might changed or the patch files has beend modified.
+### acme_structure.go.patch
 
-If the version of Terraform ACME provider by vancluever has been changed, you might need to recreate new patch.
+Add backoff feature on the expandACMEClient funciton.
+
+### certificate_challenges.go.patch
+
+Add backoff feature on the action that relate to certificate challenges.
+
+### errorlist.go.patch
+Create a new file that contain defination of isAbleToRetry function.
+
+### go.mod.patch
+
+Add dependencies that needed for the changes.
+
+### go.sum.patch
+
+Add dependencies that needed for the changes.
+
+### index.md.patch
+
+Edit the terraform documentations to pointing the correct provider source and version.
+
+### resource_acme_certificate.go.patch
+
+Add backoff feature on the action that relate to resource acme certification.
+
+### resource_acme_registration.go.patch
+
+Add backoff feature on the action that relate to resource acme registration.
+
+### terraform-registry-manifest.json.patch
+
+Create new file that contain terraform registry manifest configuration. Needed when performing goreleaser.
 
 ## Retryable Errors
 
