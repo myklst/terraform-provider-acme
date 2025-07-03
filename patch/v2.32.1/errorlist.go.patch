@@ -1,4 +1,4 @@
-0a1,31
+0a1,33
 > package acme
 > 
 > import "strings"
@@ -12,6 +12,7 @@
 > 	ZEROSSL_ERR_ACCOUNT_TOO_MANY_REQUESTS       = "429 ::POST :: https://acme.zerossl.com/v2/DV90/account"
 > 	ZEROSSL_ERR_REVOKE_CERT_TOO_MANY_REQUESTS   = "429 ::POST :: https://acme.zerossl.com/v2/DV90/revokeCert"
 > 	ZEROSSL_ERR_CHALLENGE_TOO_MANY_REQUESTS     = "429 ::POST :: https://acme.zerossl.com/v2/DV90/chall"
+> 	ZEROSSL_ERR_INVALID_CHARACTER               = "502 ::POST :: https://acme.zerossl.com/v2/DV90/authz"
 > 	LETSENCRYPT_ERR_RATE_LIMITED                = "429 :: POST :: https://acme-staging-v02.api.letsencrypt.org/acme/new-acct"
 > 	ERR_TIME_LIMIT_EXCEEDED                     = "time limit exceeded"
 > 	ERR_SERVER_NO_RESPONSE                      = "net/http: timeout awaiting response headers"
@@ -26,6 +27,7 @@
 > 		strings.Contains(errCode, ZEROSSL_ERR_ACCOUNT_TOO_MANY_REQUESTS) ||
 > 		strings.Contains(errCode, ZEROSSL_ERR_REVOKE_CERT_TOO_MANY_REQUESTS) ||
 > 		strings.Contains(errCode, ZEROSSL_ERR_CHALLENGE_TOO_MANY_REQUESTS) ||
+> 		strings.Contains(errCode, ZEROSSL_ERR_INVALID_CHARACTER) ||
 > 		strings.Contains(errCode, LETSENCRYPT_ERR_RATE_LIMITED) ||
 > 		strings.Contains(errCode, ERR_TIME_LIMIT_EXCEEDED) ||
 > 		strings.Contains(errCode, ERR_SERVER_NO_RESPONSE)
