@@ -1,5 +1,5 @@
---- submodule/acme_copy/.goreleaser.yml	2025-07-03 11:59:56.256936388 +0800
-+++ submodule/acme/.goreleaser.yml	2025-07-03 12:00:13.029603490 +0800
+--- submodule/acme_copy/.goreleaser.yml	2025-07-03 16:51:20.096629577 +0800
++++ submodule/acme/.goreleaser.yml	2025-07-03 16:51:21.880664005 +0800
 @@ -6,42 +6,43 @@
      # this is just an example and not a requirement for provider building/publishing
      - go mod tidy

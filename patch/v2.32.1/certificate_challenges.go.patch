@@ -1,5 +1,5 @@
---- submodule/acme_copy/acme/certificate_challenges.go	2025-07-03 11:59:56.256936388 +0800
-+++ submodule/acme/acme/certificate_challenges.go	2025-07-03 12:41:00.596707267 +0800
+--- submodule/acme_copy/acme/certificate_challenges.go	2025-07-03 16:51:20.097629597 +0800
++++ submodule/acme/acme/certificate_challenges.go	2025-07-03 16:51:21.876663927 +0800
 @@ -5,6 +5,7 @@
  	"strconv"
  	"time"

@@ -1,5 +1,5 @@
---- submodule/acme_copy/acme/resource_acme_certificate.go	2025-07-03 11:59:56.256936388 +0800
-+++ submodule/acme/acme/resource_acme_certificate.go	2025-07-03 12:45:42.815590009 +0800
+--- submodule/acme_copy/acme/resource_acme_certificate.go	2025-07-03 16:51:20.097629597 +0800
++++ submodule/acme/acme/resource_acme_certificate.go	2025-07-03 16:51:21.878663966 +0800
 @@ -7,6 +7,7 @@
  	"log"
  	"time"

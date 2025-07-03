@@ -1,5 +1,5 @@
---- submodule/acme_copy/acme/resource_acme_registration.go	2025-07-03 11:59:56.256936388 +0800
-+++ submodule/acme/acme/resource_acme_registration.go	2025-07-03 12:00:13.028603450 +0800
+--- submodule/acme_copy/acme/resource_acme_registration.go	2025-07-03 16:51:20.097629597 +0800
++++ submodule/acme/acme/resource_acme_registration.go	2025-07-03 16:51:21.879663985 +0800
 @@ -1,6 +1,7 @@
  package acme
  

@@ -1,5 +1,5 @@
---- submodule/acme_copy/acme/acme_structure.go	2025-07-03 11:59:56.256936388 +0800
-+++ submodule/acme/acme/acme_structure.go	2025-07-03 12:20:32.199567149 +0800
+--- submodule/acme_copy/acme/acme_structure.go	2025-07-03 16:51:20.097629597 +0800
++++ submodule/acme/acme/acme_structure.go	2025-07-03 16:51:21.875663908 +0800
 @@ -16,6 +16,7 @@
  	"fmt"
  	"time"
