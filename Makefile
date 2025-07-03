@@ -1,5 +1,5 @@
-SUBMODULE_VERSION ?= v2.21.0
-PATCH_APPLY_VERSION ?= v2.21.0
+PATCH_VERSION ?= v2.32.1
+PATCH_APPLY_VERSION ?= v2.32.1
 SUBMODULE_PATH ?= submodule/acme
 ORI_SUBMODULE_NAME ?= submodule/acme_copy
 RM_SUBMODULE_NAME ?= submodule/acme
@@ -16,15 +16,16 @@ copy-submodule:
 
 .PHONY: create-patch
 create-patch:
-	diff -u $(ORI_SUBMODULE_NAME)/acme/acme_structure.go $(SUBMODULE_PATH)/acme/acme_structure.go > ./patch/$(SUBMODULE_VERSION)/acme_structure.go.patch  || exit 0
-	diff -u $(ORI_SUBMODULE_NAME)/acme/certificate_challenges.go $(SUBMODULE_PATH)/acme/certificate_challenges.go > ./patch/$(SUBMODULE_VERSION)/certificate_challenges.go.patch  || exit 0
-	diff -N $(ORI_SUBMODULE_NAME)/acme/errorlist.go $(SUBMODULE_PATH)/acme/errorlist.go > ./patch/$(SUBMODULE_VERSION)/errorlist.go.patch || exit 0
-	diff -u $(ORI_SUBMODULE_NAME)/acme/resource_acme_certificate.go $(SUBMODULE_PATH)/acme/resource_acme_certificate.go > ./patch/$(SUBMODULE_VERSION)/resource_acme_certificate.go.patch || exit 0
-	diff -u $(ORI_SUBMODULE_NAME)/acme/resource_acme_registration.go $(SUBMODULE_PATH)/acme/resource_acme_registration.go > ./patch/$(SUBMODULE_VERSION)/resource_acme_registration.go.patch || exit 0
-	diff -u $(ORI_SUBMODULE_NAME)/go.mod $(SUBMODULE_PATH)/go.mod > ./patch/$(SUBMODULE_VERSION)/go.mod.patch || exit 0
-	diff -u $(ORI_SUBMODULE_NAME)/.goreleaser.yml $(SUBMODULE_PATH)/.goreleaser.yml > ./patch/$(SUBMODULE_VERSION)/.goreleaser.yml.patch || exit 0
-	diff -u $(ORI_SUBMODULE_NAME)/go.sum $(SUBMODULE_PATH)/go.sum > ./patch/$(SUBMODULE_VERSION)/go.sum.patch || exit 0
-	diff -N $(ORI_SUBMODULE_NAME)/terraform-registry-manifest.json $(SUBMODULE_PATH)/terraform-registry-manifest.json > ./patch/$(SUBMODULE_VERSION)/terraform-registry-manifest.json.patch || exit 0
+	mkdir -p ./patch/$(PATCH_VERSION)
+	diff -u $(ORI_SUBMODULE_NAME)/acme/acme_structure.go $(SUBMODULE_PATH)/acme/acme_structure.go > ./patch/$(PATCH_VERSION)/acme_structure.go.patch  || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/acme/certificate_challenges.go $(SUBMODULE_PATH)/acme/certificate_challenges.go > ./patch/$(PATCH_VERSION)/certificate_challenges.go.patch  || exit 0
+	diff -N $(ORI_SUBMODULE_NAME)/acme/errorlist.go $(SUBMODULE_PATH)/acme/errorlist.go > ./patch/$(PATCH_VERSION)/errorlist.go.patch || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/acme/resource_acme_certificate.go $(SUBMODULE_PATH)/acme/resource_acme_certificate.go > ./patch/$(PATCH_VERSION)/resource_acme_certificate.go.patch || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/acme/resource_acme_registration.go $(SUBMODULE_PATH)/acme/resource_acme_registration.go > ./patch/$(PATCH_VERSION)/resource_acme_registration.go.patch || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/go.mod $(SUBMODULE_PATH)/go.mod > ./patch/$(PATCH_VERSION)/go.mod.patch || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/.goreleaser.yml $(SUBMODULE_PATH)/.goreleaser.yml > ./patch/$(PATCH_VERSION)/.goreleaser.yml.patch || exit 0
+	diff -u $(ORI_SUBMODULE_NAME)/go.sum $(SUBMODULE_PATH)/go.sum > ./patch/$(PATCH_VERSION)/go.sum.patch || exit 0
+	diff -N $(ORI_SUBMODULE_NAME)/terraform-registry-manifest.json $(SUBMODULE_PATH)/terraform-registry-manifest.json > ./patch/$(PATCH_VERSION)/terraform-registry-manifest.json.patch || exit 0
 
 .PHONY: patch-file
 patch-file:

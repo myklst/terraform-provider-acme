@@ -1,0 +1,149 @@
+--- submodule/acme_copy/acme/certificate_challenges.go	2025-07-03 11:59:56.256936388 +0800
++++ submodule/acme/acme/certificate_challenges.go	2025-07-03 12:41:00.596707267 +0800
+@@ -5,6 +5,7 @@
+ 	"strconv"
+ 	"time"
+ 
++	"github.com/cenkalti/backoff/v4"
+ 	"github.com/go-acme/lego/v4/challenge"
+ 	"github.com/go-acme/lego/v4/challenge/dns01"
+ 	"github.com/go-acme/lego/v4/challenge/http01"
+@@ -40,11 +41,23 @@
+ 		if err != nil {
+ 			return dnsCloser, err
+ 		}
+-
+-		if err := client.Challenge.SetDNS01Provider(
+-			providerWrapper,
+-			expandDNSChallengeOptions(d)...,
+-		); err != nil {
++		setDns01Provider := func() error {
++			if err := client.Challenge.SetDNS01Provider(
++				providerWrapper,
++				expandDNSChallengeOptions(d)...,
++			); err != nil {
++				if isAbleToRetry(err.Error()) {
++					return err
++				} else {
++					return backoff.Permanent(err)
++				}
++			}
++			return nil
++		}
++		reconnectBackoff := backoff.NewExponentialBackOff()
++		reconnectBackoff.MaxElapsedTime = DefaultMaxElapsedTime
++		err = backoff.Retry(setDns01Provider, reconnectBackoff)
++		if err != nil {
+ 			return dnsCloser, err
+ 		}
+ 	}
+@@ -57,7 +70,20 @@
+ 			httpServerProvider.SetProxyHeader(proxyHeader.(string))
+ 		}
+ 
+-		if err := client.Challenge.SetHTTP01Provider(httpServerProvider); err != nil {
++		setHttp01Provider := func() error {
++			if err := client.Challenge.SetHTTP01Provider(httpServerProvider); err != nil {
++				if isAbleToRetry(err.Error()) {
++					return err
++				} else {
++					return backoff.Permanent(err)
++				}
++			}
++			return nil
++		}
++		reconnectBackoff := backoff.NewExponentialBackOff()
++		reconnectBackoff.MaxElapsedTime = DefaultMaxElapsedTime
++		err := backoff.Retry(setHttp01Provider, reconnectBackoff)
++		if err != nil {
+ 			return dnsCloser, err
+ 		}
+ 	}
+@@ -71,7 +97,20 @@
+ 			return dnsCloser, err
+ 		}
+ 
+-		if err := client.Challenge.SetHTTP01Provider(httpWebrootProvider); err != nil {
++		setHttp01Provider := func() error {
++			if err := client.Challenge.SetHTTP01Provider(httpWebrootProvider); err != nil {
++				if isAbleToRetry(err.Error()) {
++					return err
++				} else {
++					return backoff.Permanent(err)
++				}
++			}
++			return nil
++		}
++		reconnectBackoff := backoff.NewExponentialBackOff()
++		reconnectBackoff.MaxElapsedTime = DefaultMaxElapsedTime
++		err = backoff.Retry(setHttp01Provider, reconnectBackoff)
++		if err != nil {
+ 			return dnsCloser, err
+ 		}
+ 	}
+@@ -85,7 +124,20 @@
+ 			return dnsCloser, err
+ 		}
+ 
+-		if err := client.Challenge.SetHTTP01Provider(httpMemcachedProvider); err != nil {
++		setHttp01Provider := func() error {
++			if err := client.Challenge.SetHTTP01Provider(httpMemcachedProvider); err != nil {
++				if isAbleToRetry(err.Error()) {
++					return err
++				} else {
++					return backoff.Permanent(err)
++				}
++			}
++			return nil
++		}
++		reconnectBackoff := backoff.NewExponentialBackOff()
++		reconnectBackoff.MaxElapsedTime = DefaultMaxElapsedTime
++		err = backoff.Retry(setHttp01Provider, reconnectBackoff)
++		if err != nil {
+ 			return dnsCloser, err
+ 		}
+ 	}
+@@ -99,7 +151,20 @@
+ 			return dnsCloser, err
+ 		}
+ 
+-		if err := client.Challenge.SetHTTP01Provider(httpS3Provider); err != nil {
++		setHttp01Provider := func() error {
++			if err := client.Challenge.SetHTTP01Provider(httpS3Provider); err != nil {
++				if isAbleToRetry(err.Error()) {
++					return err
++				} else {
++					return backoff.Permanent(err)
++				}
++			}
++			return nil
++		}
++		reconnectBackoff := backoff.NewExponentialBackOff()
++		reconnectBackoff.MaxElapsedTime = DefaultMaxElapsedTime
++		err = backoff.Retry(setHttp01Provider, reconnectBackoff)
++		if err != nil {
+ 			return dnsCloser, err
+ 		}
+ 	}
+@@ -109,7 +174,20 @@
+ 		tlsProvider := tlsalpn01.NewProviderServer(
+ 			"", strconv.Itoa(provider.([]interface{})[0].(map[string]interface{})["port"].(int)))
+ 
+-		if err := client.Challenge.SetTLSALPN01Provider(tlsProvider); err != nil {
++		setTlsAlpn01Provider := func() error {
++			if err := client.Challenge.SetTLSALPN01Provider(tlsProvider); err != nil {
++				if isAbleToRetry(err.Error()) {
++					return err
++				} else {
++					return backoff.Permanent(err)
++				}
++			}
++			return nil
++		}
++		reconnectBackoff := backoff.NewExponentialBackOff()
++		reconnectBackoff.MaxElapsedTime = DefaultMaxElapsedTime
++		err := backoff.Retry(setTlsAlpn01Provider, reconnectBackoff)
++		if err != nil {
+ 			return dnsCloser, err
+ 		}
+ 	}

@@ -1,0 +1,100 @@
+--- submodule/acme_copy/acme/resource_acme_registration.go	2025-07-03 11:59:56.256936388 +0800
++++ submodule/acme/acme/resource_acme_registration.go	2025-07-03 12:00:13.028603450 +0800
+@@ -1,6 +1,7 @@
+ package acme
+ 
+ import (
++	"github.com/cenkalti/backoff/v4"
+ 	"github.com/go-acme/lego/v4/acme"
+ 	"github.com/go-acme/lego/v4/registration"
+ 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+@@ -101,6 +102,12 @@
+ 				Computed: true,
+ 			},
+ 		},
++		Timeouts: &schema.ResourceTimeout{
++			Create: schema.DefaultTimeout(DefaultMaxElapsedTime),
++			Read:   schema.DefaultTimeout(DefaultMaxElapsedTime),
++			Update: schema.DefaultTimeout(DefaultMaxElapsedTime),
++			Delete: schema.DefaultTimeout(DefaultMaxElapsedTime),
++		},
+ 	}
+ }
+ 
+@@ -127,24 +134,34 @@
+ 
+ 	var reg *registration.Resource
+ 	// If EAB was enabled, register using EAB.
+-	if v, ok := d.GetOk("external_account_binding"); ok {
+-		reg, err = client.Registration.RegisterWithExternalAccountBinding(registration.RegisterEABOptions{
+-			TermsOfServiceAgreed: true,
+-			Kid:                  v.([]interface{})[0].(map[string]interface{})["key_id"].(string),
+-			HmacEncoded:          v.([]interface{})[0].(map[string]interface{})["hmac_base64"].(string),
+-		})
+-	} else {
+-		// Normal registration.
+-		reg, err = client.Registration.Register(registration.RegisterOptions{
+-			TermsOfServiceAgreed: true,
+-		})
+-	}
+-
+-	if err != nil {
+-		return err
++	registerAccount := func() error {
++		if v, ok := d.GetOk("external_account_binding"); ok {
++			reg, err = client.Registration.RegisterWithExternalAccountBinding(registration.RegisterEABOptions{
++				TermsOfServiceAgreed: true,
++				Kid:                  v.([]interface{})[0].(map[string]interface{})["key_id"].(string),
++				HmacEncoded:          v.([]interface{})[0].(map[string]interface{})["hmac_base64"].(string),
++			})
++		} else {
++			// Normal registration.
++			reg, err = client.Registration.Register(registration.RegisterOptions{
++				TermsOfServiceAgreed: true,
++			})
++		}
++		if err != nil {
++			if isAbleToRetry(err.Error()) {
++				return err
++			} else {
++				return backoff.Permanent(err)
++			}
++		}
++		return nil
+ 	}
++	reconnectBackoff := backoff.NewExponentialBackOff()
++	reconnectBackoff.MaxElapsedTime = DefaultMaxElapsedTime
++	err = backoff.Retry(registerAccount, reconnectBackoff)
+ 
+ 	_, user, err := expandACMEClient(d, meta, true)
++
+ 	if err != nil {
+ 		return err
+ 	}
+@@ -175,7 +192,25 @@
+ 		return err
+ 	}
+ 
+-	return client.Registration.DeleteRegistration()
++	deleteRegistration := func() error {
++		err := client.Registration.DeleteRegistration()
++		if err != nil {
++			if isAbleToRetry(err.Error()) {
++				return err
++			} else {
++				return backoff.Permanent(err)
++			}
++		}
++		return nil
++	}
++	reconnectBackoff := backoff.NewExponentialBackOff()
++	reconnectBackoff.MaxElapsedTime = DefaultMaxElapsedTime
++	err = backoff.Retry(deleteRegistration, reconnectBackoff)
++	if err != nil {
++		return err
++	}
++
++	return nil
+ }
+ 
+ func regGone(err error) bool {
