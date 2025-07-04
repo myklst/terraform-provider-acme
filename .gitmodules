@@ -1,3 +1,4 @@
 [submodule "submodule/acme"]
 	path = submodule/acme
 	url = https://github.com/vancluever/terraform-provider-acme.git
+	branch = v2.32.1
